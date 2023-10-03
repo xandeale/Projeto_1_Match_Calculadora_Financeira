@@ -31,9 +31,13 @@ def validar_renda(renda):
 
 # Função para calcular o valor das prestações mensais
 def calcular_prestacoes(valor_emprestimo, taxa_juros, prazo):
-    taxa_juros_decimal = taxa_juros / 100  # Converte a taxa de porcentagem para decimal
-    prestacao = (valor_emprestimo * (taxa_juros_decimal/12)) / (1 - (1+(taxa_juros_decimal/12))**(-prazo))
-    return prestacao
+    try:
+        taxa_juros_decimal = taxa_juros / 100  # Converte a taxa de porcentagem para decimal
+        prestacao = (valor_emprestimo * (taxa_juros_decimal/12)) / (1 - (1+(taxa_juros_decimal/12))**(-prazo))
+        return prestacao
+    except ZeroDivisionError:
+        print("Divisão por zero")
+        main()
 
 # Função principal
 def main():
@@ -48,9 +52,16 @@ def main():
         if valor_emprestimo > renda * 10:
             print("O valor do empréstimo excede 10x a renda!")
             main()
+        else: 
+            pass
 
         # Recebe o prazo do investimento em meses
         prazo = int(input("Informe o prazo do empréstimo em meses:"))
+        if prazo < 0:
+            print("O prazo informado é menor do que zero")
+            main()
+        else: 
+            pass
         
         # Recebe a taxa de juros
         taxa_juros = float(input("Informe a Taxa de juros anual desejada:"))
@@ -68,12 +79,12 @@ def main():
     
     else:
         print("Desculpe, sua renda não atende aos requisitos mínimos para o empréstimo.")
-        exit()
+        main()
 
         
 
 # Apresenta os resultados
-    print("Resultado do Cálculo:")
+    print("\nResultado do Cálculo:")
     print(f'Renda mensal informada: R$ {renda:.4f}')
     print(f'Valor tomado como empréstimo: R$ {valor_emprestimo:.4f}')
     print(f"Taxa de Juros anual: {taxa_juros}% ao ano")
