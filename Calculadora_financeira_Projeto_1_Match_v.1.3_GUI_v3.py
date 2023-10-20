@@ -45,11 +45,13 @@ def calculate_loan():
 # Create the main window
 window = tk.Tk()
 window.title("Calculadora de Empréstimo")
+window['background']='#19bfcf'
 
 # Create and configure the input fields
 style = ttk.Style()
-style.configure("TLabel", foreground="blue", font=("Arial", 12))
-style.configure("TButton", foreground="white", background="blue", font=("Arial", 12))
+style.configure("TLabel", foreground="#1757cf", background="#19bfcf", font=("Arial", 12))
+style.configure("TButton", foreground="#1757cf", background="#19bfcf", font=("Arial", 12))
+style.configure("TFrame", background="#19bfcf")
 
 frame = ttk.Frame(window)
 frame.pack(padx=20, pady=20)
