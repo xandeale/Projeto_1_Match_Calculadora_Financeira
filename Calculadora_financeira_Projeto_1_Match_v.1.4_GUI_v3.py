@@ -6,10 +6,13 @@ def validar_renda(renda):
     limite_minimo = 1000
     return renda >= limite_minimo
 
-def calcular_prestacoes(valor_emprestimo, taxa_juros, prazo):
+def calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo):
     try:
-        taxa_juros_decimal = taxa_juros / 100
-        prestacao = (valor_emprestimo * (taxa_juros_decimal / 12)) / (1 - (1 + (taxa_juros_decimal / 12)) ** (-prazo))
+        
+        #Nova forma de cálculo de prestação, usando a fórmula em https://en.wikipedia.org/wiki/Equated_monthly_installment
+        #A nova fórmula de cálculo da prestação funciona igual a calculadora do banco central: https://www3.bcb.gov.br/CALCIDADAO/publico/exibirFormFinanciamentoPrestacoesFixas.do?method=exibirFormFinanciamentoPrestacoesFixas
+        taxa_juros_mensal_decimal = taxa_juros_mensal/100
+        prestacao = ((valor_emprestimo * taxa_juros_mensal_decimal) * ((1 + taxa_juros_mensal_decimal) ** (prazo)))/(((1 + taxa_juros_mensal_decimal)**(prazo))-1)
         return prestacao
     except ZeroDivisionError:
         messagebox.showerror("Erro", "Divisão por zero")
@@ -27,7 +30,7 @@ def calculate_loan():
             else:
                 taxa_juros = float(taxa_juros_entry.get())
                 taxa_juros_mensal = ((1 + taxa_juros / 100) ** (1 / 12) - 1) * 100
-                prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros, prazo)
+                prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo)
                 custo_total = prestacao * prazo
 
                 results_text.set(
@@ -44,7 +47,7 @@ def calculate_loan():
 
 # Create the main window
 window = tk.Tk()
-window.title("Calculadora de Empréstimo")
+window.title("Calculadora de Prestação de Empréstimo")
 window['background']='#19bfcf'
 
 # Create and configure the input fields
