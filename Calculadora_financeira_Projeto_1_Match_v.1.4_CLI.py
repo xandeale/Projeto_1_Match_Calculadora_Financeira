@@ -30,10 +30,12 @@ def validar_renda(renda):
 
 
 # Função para calcular o valor das prestações mensais
-def calcular_prestacoes(valor_emprestimo, taxa_juros, prazo):
+def calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo):
     try:
-        taxa_juros_decimal = taxa_juros / 100  # Converte a taxa de porcentagem para decimal
-        prestacao = (valor_emprestimo * (taxa_juros_decimal/12)) / (1 - (1+(taxa_juros_decimal/12))**(-prazo))
+        #Nova forma de cálculo de prestação, usando a fórmula em https://en.wikipedia.org/wiki/Equated_monthly_installment
+        #A nova fórmula de cálculo da prestação funciona igual a calculadora do banco central: https://www3.bcb.gov.br/CALCIDADAO/publico/exibirFormFinanciamentoPrestacoesFixas.do?method=exibirFormFinanciamentoPrestacoesFixas
+        taxa_juros_mensal_decimal = taxa_juros_mensal / 100  # Converte a taxa de porcentagem para decimal
+        prestacao = ((valor_emprestimo * taxa_juros_mensal_decimal) * ((1 + taxa_juros_mensal_decimal) ** (prazo)))/(((1 + taxa_juros_mensal_decimal)**(prazo))-1)
         return prestacao
     except ZeroDivisionError:
         print("Divisão por zero")
@@ -70,10 +72,10 @@ def main():
         taxa_juros_mensal = ((1 + taxa_juros/100)**(1/12) -1) * 100
 
         # Calcula o valor das prestações mensais
-        prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros, prazo)
+        prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo)
 
         # Calcula o custo total do empréstimo
-        custo_total = prestacao * prazo
+        custo_total = (prestacao * prazo)
 
 
     

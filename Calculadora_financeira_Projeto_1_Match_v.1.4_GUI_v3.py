@@ -31,7 +31,7 @@ def calculate_loan():
                 taxa_juros = float(taxa_juros_entry.get())
                 taxa_juros_mensal = ((1 + taxa_juros / 100) ** (1 / 12) - 1) * 100
                 prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo)
-                custo_total = prestacao * prazo
+                custo_total = (prestacao * prazo)
 
                 results_text.set(
                     f'Renda mensal informada: R$ {renda:.4f}\n'
