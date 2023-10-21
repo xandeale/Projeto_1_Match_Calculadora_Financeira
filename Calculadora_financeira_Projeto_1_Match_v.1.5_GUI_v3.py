@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter import Menu
 
 def validar_renda(renda):
     limite_minimo = 1000
@@ -33,17 +34,26 @@ def calculate_loan():
                 prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo)
                 custo_total = (prestacao * prazo)
 
-                results_text.set(
-                    f'Renda mensal informada: R$ {renda:.4f}\n'
-                    f'Valor tomado como empréstimo: R$ {valor_emprestimo:.4f}\n'
-                    f"Taxa de Juros anual: {taxa_juros_anual:.4f}% ao ano\n"
-                    f"Taxa de Juros mensal: {taxa_juros_mensal:.4f}% ao mês\n"
+                results_text.config(state=tk.NORMAL)
+                results_text.delete(1.0, tk.END)
+                results_text.insert(tk.END,
+                    f'Renda mensal informada: R$ {renda:.2f}\n'
+                    f'Valor tomado como empréstimo: R$ {valor_emprestimo:.2f}\n'
+                    f"Taxa de Juros anual: {taxa_juros_anual:.2f}% ao ano\n"
+                    f"Taxa de Juros mensal: {taxa_juros_mensal:.2f}% ao mês\n"
                     f"Prazo em meses: {prazo} meses\n"
-                    f"Valor das Prestações Mensais: R$ {prestacao:.4f}\n"
-                    f"Custo Total do Empréstimo: R$ {custo_total:.4f}"
+                    f"Valor das Prestações Mensais: R$ {prestacao:.2f}\n"
+                    f"Custo Total do Empréstimo: R$ {custo_total:.2f}"
                 )
     else:
         messagebox.showerror("Erro", "Desculpe, sua renda não atende aos requisitos mínimos para o empréstimo.")
+
+
+def copy_to_clipboard():
+    text = results_text.get(1.0, tk.END)
+    window.clipboard_clear()
+    window.clipboard_append(text)
+    window.update()
 
 # Create the main window
 window = tk.Tk()
@@ -79,8 +89,17 @@ calculate_button = ttk.Button(frame, text="Calcular", command=calculate_loan)
 calculate_button.grid(row=4, columnspan=2, padx=10, pady=10)
 
 # Create a label for displaying the results
-results_text = tk.StringVar()
-results_label = ttk.Label(window, textvariable=results_text)
-results_label.pack(pady=10)
+results_text = tk.Text(window, wrap=tk.WORD, height=10, width=40)
+results_text.pack(pady=10)
+results_text.config(state=tk.DISABLED)
+
+# Create a context menu for the Text widget
+context_menu = Menu(results_text, tearoff=0)
+context_menu.add_command(label="Copy", command=copy_to_clipboard)
+
+def show_context_menu(event):
+    context_menu.tk_popup(event.x_root, event.y_root)
+
+results_text.bind("<Button-3>", show_context_menu)  # Right-click event
 
 window.mainloop()
