@@ -28,15 +28,15 @@ def calculate_loan():
             if prazo < 0:
                 messagebox.showerror("Erro", "O prazo informado é menor do que zero")
             else:
-                taxa_juros = float(taxa_juros_entry.get())
-                taxa_juros_mensal = ((1 + taxa_juros / 100) ** (1 / 12) - 1) * 100
+                taxa_juros_mensal = float(taxa_juros_mensal_entry.get())
+                taxa_juros_anual = ((1 + taxa_juros_mensal / 100) ** (12) - 1) * 100
                 prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo)
                 custo_total = (prestacao * prazo)
 
                 results_text.set(
                     f'Renda mensal informada: R$ {renda:.4f}\n'
                     f'Valor tomado como empréstimo: R$ {valor_emprestimo:.4f}\n'
-                    f"Taxa de Juros anual: {taxa_juros}% ao ano\n"
+                    f"Taxa de Juros anual: {taxa_juros_anual:.4f}% ao ano\n"
                     f"Taxa de Juros mensal: {taxa_juros_mensal:.4f}% ao mês\n"
                     f"Prazo em meses: {prazo} meses\n"
                     f"Valor das Prestações Mensais: R$ {prestacao:.4f}\n"
@@ -71,9 +71,9 @@ ttk.Label(frame, text="Prazo (em meses):").grid(row=2, column=0, padx=10, pady=5
 prazo_entry = ttk.Entry(frame)
 prazo_entry.grid(row=2, column=1, padx=10, pady=5)
 
-ttk.Label(frame, text="Taxa de Juros Anual (%):").grid(row=3, column=0, padx=10, pady=5)
-taxa_juros_entry = ttk.Entry(frame)
-taxa_juros_entry.grid(row=3, column=1, padx=10, pady=5)
+ttk.Label(frame, text="Taxa de Juros mensal (%):").grid(row=3, column=0, padx=10, pady=5)
+taxa_juros_mensal_entry = ttk.Entry(frame)
+taxa_juros_mensal_entry.grid(row=3, column=1, padx=10, pady=5)
 
 calculate_button = ttk.Button(frame, text="Calcular", command=calculate_loan)
 calculate_button.grid(row=4, columnspan=2, padx=10, pady=10)

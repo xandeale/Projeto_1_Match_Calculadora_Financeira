@@ -65,11 +65,11 @@ def main():
         else: 
             pass
         
-        # Recebe a taxa de juros
-        taxa_juros = float(input("Informe a Taxa de juros anual desejada:"))
+        # Recebe a taxa de juros mensal
+        taxa_juros_mensal = float(input("Informe a Taxa de juros mensal desejada:"))
 
-        # Calcula a taxa de juros mensal
-        taxa_juros_mensal = ((1 + taxa_juros/100)**(1/12) -1) * 100
+        # Calcula a taxa de juros anual
+        taxa_juros_anual = ((1 + taxa_juros_mensal/100)**(12) -1) * 100
 
         # Calcula o valor das prestações mensais
         prestacao = calcular_prestacoes(valor_emprestimo, taxa_juros_mensal, prazo)
@@ -89,7 +89,7 @@ def main():
     print("\nResultado do Cálculo:")
     print(f'Renda mensal informada: R$ {renda:.4f}')
     print(f'Valor tomado como empréstimo: R$ {valor_emprestimo:.4f}')
-    print(f"Taxa de Juros anual: {taxa_juros}% ao ano")
+    print(f"Taxa de Juros anual: {taxa_juros_anual:.4f}% ao ano")
     print(f"Taxa de Juros mensal: {taxa_juros_mensal:.4f}% ao mês")
     print(f"Prazo em meses: {prazo} meses")
     print(f"Valor das Prestações Mensais: R$ {prestacao:.4f}")
